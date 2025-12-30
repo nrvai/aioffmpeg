@@ -21,7 +21,8 @@ class Transport(Enum):
 class Source:
     host: str
     port: int
-    path: Optional[str]
+    path: str
+    query: dict[str, str]
     authentication: Optional[Authentication]
     transport: Transport
 
@@ -29,16 +30,18 @@ class Source:
         self: Self,
         *,
         host: str,
-        port: int,
+        port: Optional[int] = None,
         path: Optional[str] = None,
+        query: Optional[dict[str, str]] = None,
         authentication: Optional[Authentication] = None,
-        transport: Transport = Transport.TCP
+        transport: Optional[Transport] = None
     ) -> None:
         self.host = host
-        self.port = port
-        self.path = path
+        self.port = port if port is not None else 554
+        self.path = path if path is not None else "/"
+        self.query = query if query is not None else {}
         self.authentication = authentication
-        self.transport = transport
+        self.transport = transport if transport is not None else Transport.TCP
 
 
 def build_url(source: Source) -> URL:
@@ -46,7 +49,8 @@ def build_url(source: Source) -> URL:
         scheme="rtsp",
         host=source.host,
         port=source.port,
-        path=source.path or "/",
+        path=source.path,
+        query=source.query,
         user=source.authentication.user if \
             source.authentication else None,
         password=source.authentication.password if \
