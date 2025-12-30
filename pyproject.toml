@@ -1,0 +1,16 @@
+[project]
+name = "aioffmpeg"
+version = "0.1.0"
+description = "Lightweight, high-level, asynchronous interface to FFmpeg providing media streaming capabilities for Python"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "numpy>=2.4.0",
+    "yarl>=1.22.0",
+]
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.407",
+    "ruff>=0.14.10",
+]
