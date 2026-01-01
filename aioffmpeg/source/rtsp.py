@@ -3,13 +3,12 @@ from typing import Optional, Self
 
 from yarl import URL
 
-from .common import Authentication
+from ..common.authentication import Authentication
 
 
 __all__ = (
     "Source",
-    "Transport",
-    "build_url"
+    "Transport"
 )
 
 
@@ -43,16 +42,14 @@ class Source:
         self.authentication = authentication
         self.transport = transport if transport is not None else Transport.TCP
 
-
-def build_url(source: Source) -> URL:
-    return URL.build(
-        scheme="rtsp",
-        host=source.host,
-        port=source.port,
-        path=source.path,
-        query=source.query,
-        user=source.authentication.user if \
-            source.authentication else None,
-        password=source.authentication.password if \
-            source.authentication else None
-    )
+    def url(self: Self) -> URL:
+        return URL.build(
+            scheme="rtsp",
+            host=self.host,
+            port=self.port,
+            path=self.path,
+            query=self.query,
+            user=self.authentication.user if self.authentication else None,
+            password=self.authentication.password if \
+                self.authentication else None
+        )
