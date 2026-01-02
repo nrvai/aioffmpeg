@@ -142,7 +142,7 @@ class VideoStream:
 
             self._process = None
 
-    async def frames(self: Self) -> AsyncGenerator[bytes]:
+    async def frames(self: Self) -> AsyncGenerator[bytes, None]:
         assert self._process
         assert self._process.stdout is not None
 
